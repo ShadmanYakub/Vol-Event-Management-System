@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/about',
@@ -15,7 +15,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
     },
     {
       path: '/booking/create',
@@ -23,11 +23,43 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/BookingView.vue')
-    }
-  ]
+      component: () => import('../views/BookingView.vue'),
+    },
+    {
+      path: '/booking/:id/',
+      name: 'view-booking',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "about" */ '../views/BookingView.vue'),
+    },
+    {
+      path: '/booking/:id/update',
+      name: 'update-booking',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "about" */ '../views/BookingView.vue'),
+    },
+    {
+      path: '/bookings',
+      name: 'view-bookings',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/BookingsView.vue'),
+    },
+    {
+      path: '/charts',
+      name: 'charts',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/ChartsView.vue'),
+    },
+  ],
 })
 
 export default router
-
-
