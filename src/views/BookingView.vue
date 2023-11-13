@@ -7,7 +7,6 @@ const router = useRouter()
 const viewBooking = ref(route.name == 'view-booking')
 const createBooking = ref(route.name == 'booking-create')
 
-// he ref() function is used to create a reactive and mutable booking object. The booking object holds properties, which are initialized with their default values.
 const booking = ref({
   email: '',
   numTickets: 1,
@@ -17,8 +16,7 @@ const booking = ref({
   terms: false,
 })
 
-// whenever smth gets changed -> this function will get re-computed
-// team changed -> another
+
 
 const superheroes = computed(() => {
   if (booking.value.team == 'Avengers') {
@@ -47,9 +45,9 @@ const superheroes = computed(() => {
   }
 })
 
-// initial render
+
 onMounted(async () => {
-  // if there is an id in the route
+
   if (route.params.id) {
     getBooking()
   }
@@ -63,7 +61,7 @@ const submitBooking = async function () {
     url = url + '/' + booking.value._id
     method = 'PUT'
   }
-  // post the booking to the backend
+
   const response = await fetch(url, {
     method: method,
     headers: {
@@ -78,33 +76,32 @@ const submitBooking = async function () {
 }
 
 const deleteBooking = async function () {
-  // post the booking to the backend
+
   const response = await fetch('/api/bookings/' + booking.value._id, {
     method: 'DELETE',
   })
-  // convert the response to json
+
   const json = await response.json()
-  // log the json
+
   console.log(json)
-  // alert the user
+ 
   alert(JSON.stringify(json))
-  // redirect to the home page
+ 
   router.push('/')
 }
 
-// a function to get the booking from the backend
 const getBooking = async function () {
-  // get the booking from the backend
+ 
   const response = await fetch('/api/bookings/' + route.params.id)
-  // convert the response to json
+
   const json = await response.json()
-  // log the json
+ 
   console.log(json)
-  // set the booking, copy by value instead of reference
+ 
   booking.value = { ...json }
-  // Wait for the change to get flushed to the DOM
+
   await nextTick()
-  // set the superhero
+
   booking.value.superhero = json.superhero
 }
 </script>
@@ -200,7 +197,7 @@ const getBooking = async function () {
       </div>
       <div class="row mb-3">
         <label class="col-sm-2 col-form-label">Favourite Hero</label>
-        <!-- for every superhero create this -->
+       
         <select
           class="form-select"
           aria-label="Default select example"
@@ -239,7 +236,7 @@ const getBooking = async function () {
       </button>
     </form>
 
-    <!-- display this part when we are in view mode -->
+
     <div v-if="route.name == 'view-booking'">
       <h1>{{ booking.email }}</h1>
       <p>Number of Tickets: {{ booking.numTickets }}</p>
