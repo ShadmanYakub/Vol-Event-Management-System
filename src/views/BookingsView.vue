@@ -21,10 +21,7 @@ watch(
 
 const loadAsyncData = () => {
   const params = [
-    // 'api_key=bb6f51bef07465653c3e553d6ab161a8',
-    // 'language=en-US',
-    // 'include_adult=false',
-    // 'include_video=false',
+   
     `email=${search.value}`,
     `sort_by=${sortField.value}.${sortOrder.value}`,
     `page=${page.value}`,
@@ -33,20 +30,16 @@ const loadAsyncData = () => {
   fetch(`/api/bookings?${params}`)
     .then((response) => response.json())
     .then((result) => {
-      // api.themoviedb.org manage max 1000 pages
+     
       let currentTotal = result.total
-      // if (result.total_results / perPage.value > 100)
-      //     currentTotal = perPage.value * 100;
+     
 
       total.value = currentTotal
       data.value = result.bookings.map((item) => {
-        // item.release_date = item.release_date
-        //     ? item.release_date.replace(/-/g, "/")
-        //     : null;
+     
         return item
       })
-      // cap results for usability
-      // if (data.value.length > 10) data.value = data.value.slice(0, 5);
+     
       loading.value = false
     })
     .catch((error) => {
@@ -57,26 +50,20 @@ const loadAsyncData = () => {
     })
 }
 
-/*
- * Handle page-change event
- */
+
 const onPageChange = (p) => {
   page.value = p
   loadAsyncData()
 }
 
-/*
- * Handle sort event
- */
+
 const onSort = (field, order) => {
   sortField.value = field
   sortOrder.value = order
   loadAsyncData()
 }
 
-/*
- * Type style in relation to the value
- */
+
 const type = (value) => {
   const number = parseFloat(value)
   if (number < 6) {
