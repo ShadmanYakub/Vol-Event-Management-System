@@ -1,22 +1,10 @@
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 const route = useRoute()
-const router = useRouter()
 
 const viewBooking = ref(route.name == 'view-booking')
 const createBooking = ref(route.name == 'booking-create')
-
-const booking = ref({
-  email: '',
-  numTickets: 1,
-  payment: 'Credit Card',
-  team: '',
-  superhero: '',
-  terms: false,
-})
-
-
 
 const superheroes = computed(() => {
   if (booking.value.team == 'Avengers') {
@@ -45,23 +33,43 @@ const superheroes = computed(() => {
   }
 })
 
-
 onMounted(async () => {
+    // if there is an id in the route
+    if (route.params.id) {
+        getBooking();
+    }
+})
 
-  if (route.params.id) {
-    getBooking()
-  }
+const getBooking = async function () {
+  // get the booking from the backend
+  const response = await fetch('/api/bookings/' + route.params.id);
+  // convert the response to json
+  const json = await response.json();
+  // log the json
+  console.log(json);
+  // set the booking
+  booking.value = json;
+}
+
+const booking = ref({
+    email: '',
+    numTickets: 1,
+    payment: 'Credit Card',
+    team: '',
+    superhero: '',
+    terms: false
 })
 
 const submitBooking = async function () {
   var url = '/api/bookings'
   var method = 'POST'
 
-  if (route.name == 'update-booking') {
+  if (booking.value._id) {
     url = url + '/' + booking.value._id
     method = 'PUT'
   }
 
+  // post the booking to the backend
   const response = await fetch(url, {
     method: method,
     headers: {
@@ -76,42 +84,25 @@ const submitBooking = async function () {
 }
 
 const deleteBooking = async function () {
-
+  // post the booking to the backend
   const response = await fetch('/api/bookings/' + booking.value._id, {
     method: 'DELETE',
   })
-
+  // convert the response to json
   const json = await response.json()
-
+  // log the json
   console.log(json)
- 
+  // alert the user
   alert(JSON.stringify(json))
- 
+  // redirect to the home page
   router.push('/')
 }
 
-const getBooking = async function () {
- 
-  const response = await fetch('/api/bookings/' + route.params.id)
-
-  const json = await response.json()
- 
-  console.log(json)
- 
-  booking.value = { ...json }
-
-  await nextTick()
-
-  booking.value.superhero = json.superhero
-}
 </script>
+
 <template>
   <main>
-    <form
-      v-if="route.name != 'view-booking'"
-      class="container my-5"
-      @submit.prevent="submitBooking"
-    >
+    <form class="container my-5" @submit.prevent="submitBooking">
       <div class="row mb-3">
         <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
@@ -197,7 +188,7 @@ const getBooking = async function () {
       </div>
       <div class="row mb-3">
         <label class="col-sm-2 col-form-label">Favourite Hero</label>
-       
+        <!-- for every superhero create this -->
         <select
           class="form-select"
           aria-label="Default select example"
@@ -229,21 +220,11 @@ const getBooking = async function () {
       <button
         type="button"
         class="btn btn-danger"
-        v-if="route.name == 'update-booking'"
+        v-if="!viewBooking && !createBooking"
         v-on:click="deleteBooking"
       >
         Delete Booking
       </button>
     </form>
-
-
-    <div v-if="route.name == 'view-booking'">
-      <h1>{{ booking.email }}</h1>
-      <p>Number of Tickets: {{ booking.numTickets }}</p>
-      <p>Payment Method: {{ booking.payment }}</p>
-      <p>Favourite Team: {{ booking.team }}</p>
-      <p>Favourite Hero: {{ booking.superhero }}</p>
-      <p>Terms and Conditions: {{ booking.terms }}</p>
-    </div>
   </main>
 </template>

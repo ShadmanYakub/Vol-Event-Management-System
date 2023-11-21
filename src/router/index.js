@@ -28,35 +28,27 @@ const router = createRouter({
     {
       path: '/booking/:id/',
       name: 'view-booking',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+
       component: () =>
-        import(/* webpackChunkName: "about" */ '../views/BookingView.vue'),
+        import( '../views/BookingView.vue'),
     },
     {
       path: '/booking/:id/update',
       name: 'update-booking',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+    
       component: () =>
-        import(/* webpackChunkName: "about" */ '../views/BookingView.vue'),
+        import( '../views/BookingView.vue'),
     },
     {
       path: '/bookings',
       name: 'view-bookings',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+   
       component: () => import('../views/BookingsView.vue'),
     },
     {
       path: '/charts',
       name: 'charts',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      
       component: () => import('../views/ChartsView.vue'),
     },
   ],
