@@ -6,6 +6,17 @@ const route = useRoute()
 const viewBooking = ref(route.name == 'view-booking')
 const createBooking = ref(route.name == 'booking-create')
 
+
+const booking = ref({
+    email: '',
+    numTickets: 1,
+    payment: 'Credit Card',
+    team: '',
+    superhero: '',
+    terms: false
+})
+
+
 const superheroes = computed(() => {
   if (booking.value.team == 'Avengers') {
     booking.value.superhero = 'Captain America'
@@ -51,14 +62,7 @@ const getBooking = async function () {
   booking.value = json;
 }
 
-const booking = ref({
-    email: '',
-    numTickets: 1,
-    payment: 'Credit Card',
-    team: '',
-    superhero: '',
-    terms: false
-})
+
 
 const submitBooking = async function () {
   var url = '/api/bookings'
